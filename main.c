@@ -116,13 +116,18 @@ bool get_user_preference() {
  *           No input validation is done in this function, so it is vulnerable.
  * Returns:  The (unvalidated) integer index that the user wants to modify. */
 int get_user_to_modify_vulnerable(void) {
-    char buffer[256] = "";          /* read from the keyboard */
-    int  desired_index = 0;         /* index of user to modify */
-    /* prompt the user to enter the desired index */
-    /* read input from keyboard using fgets() and sscanf() with %d */
-    /* quit program if desired */
-    /* otherwise, return the result */
-    return -1;  // you will edit this line, too
+    char buffer[256] = "";
+    int index = 0;
+
+    printf("Enter user index to modify (%d to quit): ", EXIT_VALUE);
+    fgets(buffer, sizeof(buffer), stdin);
+    sscanf(buffer, "%d", &index);
+
+    if (index == EXIT_VALUE) {
+        exit(0);
+    }
+
+    return index;   /* NO validation */
 }
 
 /* TODO:  WRITE THIS FUNCTION */
@@ -132,6 +137,7 @@ int get_user_to_modify_vulnerable(void) {
  *          reset that user's pin.
  *          Do not do any input validation in this intentionally vulnerable function.
  * Returns: nothing, but may have some vulnerabilities */
+
 void change_pin_vulnerable(int user_i, unsigned short u_pin[], int new_pin) {
     /* TODO: modify the desired u_pin, which can be done on one line. */
     // does not return a value, so no return statement needed
