@@ -148,13 +148,30 @@ void change_pin_vulnerable(int user_i, unsigned short u_pin[], int new_pin) {
  *           Verify that value entered is valid. Re-prompt until satisfied.
  * Returns:  the (validated) integer index that the user wants to modify. */
 int get_user_to_modify_more_secure(int current_num_users) {
-    /* loop, unless they type EXIT_VALUE */
-    /* read input from keyboard using fgets() and sscanf() with %d */
-    /* quit the program, if the user entered the EXIT_VALUE */
-    /* perform input validation on the user's input */
-    /* if valid, return the answer */
-    /* otherwise, print an error message and loop to reprompt the user */
-    return -1; // you will edit this line, too
+    char buffer[256] = "";
+    int index = -1;
+
+    while (1) {
+        printf("Enter user index (0-%d) or %d to quit: ",
+               current_num_users - 1, EXIT_VALUE);
+
+        fgets(buffer, sizeof(buffer), stdin);
+        if (sscanf(buffer, "%d", &index) != 1) {
+            printf("Invalid input. Try again.\n");
+            continue;
+        }
+
+        if (index == EXIT_VALUE) {
+            exit(0);
+        }
+
+        if (index >= 0 && index < current_num_users) {
+            return index;
+        }
+
+        printf("Invalid index. Try again.\n");
+    }
+
 }
 
 /* TODO:  WRITE THIS FUNCTION */
@@ -168,8 +185,16 @@ int get_user_to_modify_more_secure(int current_num_users) {
  *        However, C syntax with pointers is a pain, and this makes it "feel"
  *        like a more familiar language such as Java. */
 bool change_pin_more_secure(int user_i, unsigned short u_pin[], int new_pin) {
-    /* validate index */
-    /* validate pin */
-    /* assign if valid */
-    return false; // you will edit this line, too
+    if (user_i < 0 || user_i >= MAX_USERS) {
+        printf("Invalid user index!\n");
+        return false;
+    }
+
+    if (new_pin < 0 || new_pin > USHRT_MAX) {
+        printf("Invalid PIN value!\n");
+        return false;
+    }
+
+    u_pin[user_i] = (unsigned short)new_pin;
+    return true;
 }
